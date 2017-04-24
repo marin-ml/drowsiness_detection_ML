@@ -1,21 +1,12 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
-
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+This is the project detect the yawning using eyes and mouth with machine learning.
 
 ### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+* Python 2.7
+* Tensorflow 0.10.0
+* OpenCV 3.2
 
 ### Contribution guidelines ###
 
