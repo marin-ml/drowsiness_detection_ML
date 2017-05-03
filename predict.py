@@ -20,13 +20,12 @@ class face_classify:
         """
             Load the image and return c0lor value
         """
-        img_data = cv2.imread(img_name)
+        img_data = cv2.imread(img_name, 0)
         return img_data
 
     def classify(self, img_data, obj_name):
 
-        gray_data = cv2.cvtColor(img_data, cv2.COLOR_RGB2GRAY)
-        resize_data = cv2.resize(gray_data, (self.img_size, self.img_size), interpolation=cv2.INTER_AREA)
+        resize_data = cv2.resize(img_data, (self.img_size, self.img_size), interpolation=cv2.INTER_AREA)
         img_train = resize_data.reshape(self.img_size * self.img_size)
 
         if obj_name == 'eye':
@@ -39,7 +38,12 @@ class face_classify:
 
 if __name__ == "__main__":
     my_class = face_classify()
-    color_img = my_class.load_image('Pictures/mouth/1/mouth_2.bmp')
+    color_img = my_class.load_image('Pictures/mouth/0/mouth_25.bmp')
     object_name = 'mouth'
+    result = my_class.classify(color_img, object_name)
+    print object_name, result
+
+    color_img = my_class.load_image('Pictures/eyes/0/eye1_255.bmp')
+    object_name = 'eye'
     result = my_class.classify(color_img, object_name)
     print object_name, result
