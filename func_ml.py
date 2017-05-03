@@ -1,9 +1,6 @@
 
-import xlwt
 import csv
 import numpy as np
-# import tensorflow as tf
-import cv2
 
 
 def load_csv(filename):

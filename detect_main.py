@@ -1,6 +1,8 @@
 
 import cv2
 from predict import face_classify
+import time
+import winsound
 
 """ ----------------- Create the haar cascade ---------------- """
 faceCascade = cv2.CascadeClassifier('xml/haarcascade_frontalface_default.xml')
@@ -15,8 +17,13 @@ color_red = (0, 0, 255)
 color_blue = (255, 0, 0)
 color_white = (255, 255, 255)
 color_black = (0, 0, 0)
+
 state = ['Close', 'Open']
 cap = cv2.VideoCapture(0)
+close_eye_start = time.time()
+open_mouth_start = time.time()
+mouth_open_time = []
+time_ind = 0
 
 """ ---------------- camera read and process loop ------------- """
 while True:
@@ -28,6 +35,8 @@ while True:
     height, width = image.shape[:2]
     cv2.rectangle(image, (30, height - 30), (450, height - 30), color_black, 54)
     cv2.rectangle(image, (30, height - 30), (450, height - 30), color_white, 50)
+    cv2.rectangle(image, (510, height - 30), (width - 30, height - 30), color_black, 54)
+    cv2.rectangle(image, (510, height - 30), (width - 30, height - 30), color_white, 50)
 
     # ----- Detect face, mouth and eyes in the image using haar cascade ----
     faces = faceCascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(100, 100), flags=2)
@@ -66,14 +75,49 @@ while True:
 
     ret_eye = [0, 0]
     eye_ind = 0
+    ret_eyes = 1
     for (x, y, w, h) in eye_data:
         img_eye = gray[y:y + h, x:x + w]
         ret_eye[eye_ind] = my_class.classify(img_eye, 'eye')
         eye_ind += 1
+        if eye_ind > 1:
+            break
+
+    ret_eyes = ret_eye[0] and ret_eye[1]
+
+    # -------------------------- deciding drowsiness -------------------------
+    if ret_eyes == 1:
+        close_eye_start = time.time()
+        close_eye_time = 0
+    else:
+        close_eye_time = time.time() - close_eye_start
+    # print close_eye_time
+
+    if ret_mouth == 0:
+        open_mouth_start = time.time()
+        open_mouth_time = 0
+        f_close = True
+    else:
+        open_mouth_time = max(time.time() - open_mouth_start - 0.5, 0)
+        if open_mouth_time > 0 and f_close:
+            mouth_open_time.append(time.time())
+            f_close = False
+
+    for time_ind in range(len(mouth_open_time)):
+        if mouth_open_time[time_ind] > time.time() - 60:
+            break
+    # print len(mouth_open_time) - time_ind
 
     # ------------------ print the result text on the image ------------------
-    cv2.putText(image, "eye: " + state[ret_eye[0] and ret_eye[1]] + ", mouth: " + state[ret_mouth],
-                (20, height - 20), cv2.FONT_HERSHEY_DUPLEX, 1, color_red, 2)
+    cv2.putText(image, "eye:" + str(int(close_eye_time)) + ',' + state[ret_eyes],
+                (20, height - 20), cv2.FONT_HERSHEY_DUPLEX, 1, color_blue, 2)
+    cv2.putText(image, "mouth:" + str(len(mouth_open_time) - time_ind) + ',' + state[ret_mouth],
+                (230, height - 20), cv2.FONT_HERSHEY_DUPLEX, 1, color_blue, 2)
+    if close_eye_time > 20 or len(mouth_open_time) - time_ind > 10:
+        cv2.putText(image, "Snooze", (505, height - 20), cv2.FONT_HERSHEY_DUPLEX, 1, color_red, 2)
+        winsound.Beep(500, 500)
+    else:
+        cv2.putText(image, "Ok", (540, height - 20), cv2.FONT_HERSHEY_DUPLEX, 1, color_red, 2)
 
     # # ------------------- Draw a rectangle around the faces -------------------
     # for (x, y, w, h) in eye_data:
