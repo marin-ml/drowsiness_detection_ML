@@ -118,15 +118,15 @@ while True:
     else:
         cv2.putText(image, "Ok", (540, height - 20), cv2.FONT_HERSHEY_DUPLEX, 1, color_red, 2)
 
-    # # ------------------- Draw a rectangle around the faces -------------------
-    # for (x, y, w, h) in eye_data:
-    #     cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-    #
-    # for (x, y, w, h) in mouth_data:
-    #     cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
-    #
-    # for (x, y, w, h) in face_data:
-    #     cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
+    # ------------------- Draw a rectangle around the faces -------------------
+    for (x, y, w, h) in eye_data:
+        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+    for (x, y, w, h) in mouth_data:
+        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
+
+    for (x, y, w, h) in face_data:
+        cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
     # -------------------- display the result image ---------------------------
     cv2.imshow("Faces found", image)
