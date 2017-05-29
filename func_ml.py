@@ -36,7 +36,7 @@ def matrix_argmax(data):
 
 def acc(d1, d2):
     cnt = 0
-    for i in xrange(d1.__len__()):
+    for i in range(d1.__len__()):
         if d1[i] == d2[i]:
             cnt += 1
 
