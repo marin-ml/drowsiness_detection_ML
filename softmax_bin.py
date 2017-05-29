@@ -16,7 +16,7 @@ def xaver_init(n_inputs, n_outputs, uniform = True):
 
 
 def train(obj_name, img_size):
-    print "Loading training data ..."
+    print("Loading training data ...")
 
     learning_rate = 0.001
     x_training = []
@@ -48,7 +48,7 @@ def train(obj_name, img_size):
     sess = tf.Session()
     sess.run(init)
 
-    print "Start training ..."
+    print("Start training ...")
     # Training cycle
     for step in range(1000):
         sess.run(optimizer, feed_dict={x: x_training, y: y_training})
@@ -61,7 +61,7 @@ def train(obj_name, img_size):
             wgt_b = sess.run(b1)
             func_ml.save_csv('model/' + obj_name + '_w.csv', wgt_w)
             func_ml.save_csv('model/' + obj_name + '_b.csv', [wgt_b])
-            print step, sess.run(cost, feed_dict={x: x_training, y: y_training}), acc1 * 100
+            print(step, sess.run(cost, feed_dict={x: x_training, y: y_training}), acc1 * 100)
 
     print ("Optimization Finished!")
 
