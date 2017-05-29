@@ -2,7 +2,6 @@
 import cv2
 from predict import face_classify
 import time
-import pygame
 
 """ ----------------- Create the haar cascade ---------------- """
 faceCascade = cv2.CascadeClassifier('xml/haarcascade_frontalface_default.xml')
@@ -116,9 +115,6 @@ while True:
                 (230, height - 20), cv2.FONT_HERSHEY_DUPLEX, 1, color_blue, 2)
     if close_eye_time > 20 or len(mouth_open_time) - time_ind > 10:
         cv2.putText(image, "Snooze", (505, height - 20), cv2.FONT_HERSHEY_DUPLEX, 1, color_red, 2)
-        pygame.init()
-        pygame.mixer.music.load('Alarm.wav')
-        pygame.mixer.music.play()
     else:
         cv2.putText(image, "Ok", (540, height - 20), cv2.FONT_HERSHEY_DUPLEX, 1, color_red, 2)
 
