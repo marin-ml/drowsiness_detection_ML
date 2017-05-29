@@ -41,9 +41,9 @@ if __name__ == "__main__":
     color_img = my_class.load_image('Pictures/mouth/0/mouth_25.bmp')
     object_name = 'mouth'
     result = my_class.classify(color_img, object_name)
-    print object_name, result
+    print(object_name, result)
 
     color_img = my_class.load_image('Pictures/eyes/0/eye1_255.bmp')
     object_name = 'eye'
     result = my_class.classify(color_img, object_name)
-    print object_name, result
+    print(object_name, result)
